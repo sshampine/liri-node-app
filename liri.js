@@ -64,7 +64,13 @@ function spotify(liriToDo) {
 		if (err) {
 			return console.log("error occured: " + err);
 		}
-		console.log(data.tracks.items[0]);
-		console.log("Artist: ")
+		var song = data.tracks.items
+		for (var j=0; j < song.length; j++){
+		//console.log(song[j]);
+		console.log("Artist: " + song[j].artists[0].name)
+		console.log("Song name: " + song[j].name);
+		console.log("Preview URL: " + song[j].preview_url)
+		console.log("----------------------------------")
+		}
 	})
 }
