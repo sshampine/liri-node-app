@@ -1,5 +1,5 @@
 var userInput = process.argv;
-
+var Spotify = require("node-spotify-api");
 console.log(userInput);
 
 var liriCommand = userInput[2];
@@ -13,6 +13,7 @@ if (liriCommand === "my-tweets") {
 } else if (liriCommand === "spotify-this-song") {
 	console.log("you selected spotify");
 	console.log("info about " + liriToDo + " will go here");
+	spotify(liriToDo);
 } else if (liriCommand === "movie-this") {
 	//console.log("you selected movie");
 	//console.log("info about " + liriToDo + " will go here");
@@ -43,5 +44,27 @@ function movie(liriToDo) {
 			console.log("The plot synopsis for " + movieName + " is: " + JSON.parse(body).Plot);
 			console.log("The main actors for " + movieName + " are " + JSON.parse(body).Actors + ".");
 		}
+	})
+}
+
+function spotify(liriToDo) {
+	if (liriToDo == undefined) {
+		liriToDo = "I Saw The Sign";
+	}
+
+	var songTitle = liriToDo
+	console.log(songTitle)
+	//var Spotify = require("node-spotify-api");
+	var spotify = new Spotify({
+		id: "630fc259fe3f4fd2a8589b4c5a79f5b3",
+		secret: "26cb06d48ed14d0fa2105e3b056a2dba"
+	});
+	
+	spotify.search({type:"track", query: songTitle}, function(err, data) {
+		if (err) {
+			return console.log("error occured: " + err);
+		}
+		console.log(data.tracks.items[0]);
+		console.log("Artist: ")
 	})
 }
