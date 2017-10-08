@@ -1,22 +1,20 @@
 var userInput = process.argv;
 var Spotify = require("node-spotify-api");
-console.log(userInput);
+var Twitter = require("twitter");
+var request = require("request");
+var key = require("./keys.js")
+
 
 var liriCommand = userInput[2];
-console.log(liriCommand);
+
 var liriToDo = userInput[3];
-console.log(liriToDo);
+
 
 if (liriCommand === "my-tweets") {
-	console.log("you selected twitter");
-	console.log("last 20 tweets goes here");
+	tweets();
 } else if (liriCommand === "spotify-this-song") {
-	console.log("you selected spotify");
-	console.log("info about " + liriToDo + " will go here");
 	spotify(liriToDo);
 } else if (liriCommand === "movie-this") {
-	//console.log("you selected movie");
-	//console.log("info about " + liriToDo + " will go here");
 	movie(liriToDo);
 }
 
@@ -24,15 +22,15 @@ if (liriCommand === "my-tweets") {
 function movie(liriToDo) {
 	if (liriToDo == undefined) {
 		liriToDo = "Mr. Nobody";
-		//console.log("info about " + liriToDo + " will go here");
+		
 	} else {
-		//console.log("info about " + liriToDo + " will go here");
+		
 	}
 
-	var request = require("request");
+	
 	var movieName = liriToDo;
 	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=40e9cece";
-	//console.log(queryUrl);
+	
 	request(queryUrl, function(error, response, body) {
 		if (!error && response.statusCode === 200) {
 			console.log("Searching for " + JSON.parse(body).Title + ". Here's what I found...");
@@ -65,6 +63,8 @@ function spotify(liriToDo) {
 			return console.log("error occured: " + err);
 		}
 		var song = data.tracks.items
+
+		//console.log(song[0])
 		for (var j=0; j < song.length; j++){
 		//console.log(song[j]);
 		console.log("Artist: " + song[j].artists[0].name)
@@ -73,4 +73,21 @@ function spotify(liriToDo) {
 		console.log("----------------------------------")
 		}
 	})
+}
+
+function tweets() {
+	//console.log("my key" + key.access_token_secret)
+	var client = new Twitter(key);
+	var params = {screen_name: "dudewally"};
+	client.get("statuses/user_timeline", params, function(error, tweets, response) {
+		if (error) {
+		 	return console.log("error occured: " + error)
+		} //console.log(tweets[1], null, 2)
+			for (var k=0; k<tweets.length; k++) {
+		  console.log(tweets[k].created_at)
+		 /console.log(tweets[k].text)
+		 //console.log(response)
+		 console.log("----------------------------------")
+		}
+	});
 }
