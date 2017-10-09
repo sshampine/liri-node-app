@@ -5,6 +5,7 @@ var request = require("request");
 var key = require("./keys.js")
 var fs = require("fs");
 var dataArray = [];
+var liriToDo = "";
 
 fs.readFile("random.txt", "utf8", function(error, data) {
 	if (error) {
@@ -15,8 +16,12 @@ fs.readFile("random.txt", "utf8", function(error, data) {
 	//console.log(dataArray[1])
 })
 //console.log(dataArray)
+for (i = 3; i < process.argv.length; i++) {
+	liriToDo = liriToDo + " " + userInput[i];
+}
+console.log(liriToDo);
 var liriCommand = userInput[2];
-var liriToDo = userInput[3];
+//var liriToDo = userInput[3];
 
 
 if (liriCommand === "my-tweets") {
@@ -31,7 +36,7 @@ if (liriCommand === "my-tweets") {
 
 
 function movie(liriToDo) {
-	if (liriToDo == undefined) {
+	if (liriToDo == "") {
 		liriToDo = "Mr. Nobody";
 		
 	} else {
@@ -57,7 +62,7 @@ function movie(liriToDo) {
 }
 
 function spotify(liriToDo) {
-	if (liriToDo == undefined) {
+	if (liriToDo == "") {
 		liriToDo = "I Saw The Sign";
 	}
 
