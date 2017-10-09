@@ -3,10 +3,19 @@ var Spotify = require("node-spotify-api");
 var Twitter = require("twitter");
 var request = require("request");
 var key = require("./keys.js")
+var fs = require("fs");
+var dataArray = [];
 
-
+fs.readFile("random.txt", "utf8", function(error, data) {
+	if (error) {
+		return console.log(error);
+	}
+	//console.log("file data" +data)
+	dataArray = data.split(",");
+	//console.log(dataArray[1])
+})
+//console.log(dataArray)
 var liriCommand = userInput[2];
-
 var liriToDo = userInput[3];
 
 
@@ -16,6 +25,8 @@ if (liriCommand === "my-tweets") {
 	spotify(liriToDo);
 } else if (liriCommand === "movie-this") {
 	movie(liriToDo);
+} else if (liriCommand === "do-what-it-says") {
+	dowhat();
 }
 
 
@@ -51,7 +62,7 @@ function spotify(liriToDo) {
 	}
 
 	var songTitle = liriToDo
-	console.log(songTitle)
+	//console.log(songTitle)
 	//var Spotify = require("node-spotify-api");
 	var spotify = new Spotify({
 		id: "630fc259fe3f4fd2a8589b4c5a79f5b3",
@@ -78,16 +89,21 @@ function spotify(liriToDo) {
 function tweets() {
 	//console.log("my key" + key.access_token_secret)
 	var client = new Twitter(key);
-	var params = {screen_name: "dudewally"};
+	var params = {screen_name: "nodejs"};
 	client.get("statuses/user_timeline", params, function(error, tweets, response) {
 		if (error) {
 		 	return console.log("error occured: " + error)
 		} //console.log(tweets[1], null, 2)
 			for (var k=0; k<tweets.length; k++) {
 		  console.log(tweets[k].created_at)
-		 /console.log(tweets[k].text)
+		  console.log(tweets[k].text)
 		 //console.log(response)
 		 console.log("----------------------------------")
 		}
 	});
+}
+
+function dowhat() {
+	console.log("function " + dataArray[1])
+	spotify(dataArray[1])
 }
