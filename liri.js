@@ -7,19 +7,19 @@ var fs = require("fs");
 var dataArray = [];
 var liriToDo = "";
 
-fs.readFile("random.txt", "utf8", function(error, data) {
-	if (error) {
-		return console.log(error);
-	}
+//fs.readFile("random.txt", "utf8", function(error, data) {
+//	if (error) {
+//		return console.log(error);
+//	}
 	//console.log("file data" +data)
-	dataArray = data.split(",");
-	//console.log(dataArray[1])
-})
+//	dataArray = data.split(",");
+//	console.log("data array " + dataArray[1])
+//})
 //console.log(dataArray)
 for (i = 3; i < process.argv.length; i++) {
 	liriToDo = liriToDo + " " + userInput[i];
 }
-console.log(liriToDo);
+//console.log(liriToDo);
 var liriCommand = userInput[2];
 //var liriToDo = userInput[3];
 
@@ -109,6 +109,15 @@ function tweets() {
 }
 
 function dowhat() {
-	console.log("function " + dataArray[1])
-	spotify(dataArray[1])
+	//console.log("function " + dataArray[1])
+	fs.readFile("random.txt", "utf8", function(error, data) {
+	if (error) {
+		return console.log(error);
+	}
+	//console.log("file data" +data)
+	dataArray = data.split(",");
+	console.log("data array " + dataArray[1])
+	spotify(dataArray[1]);
+})
+	//spotify(dataArray[1])
 }
