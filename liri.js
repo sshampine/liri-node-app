@@ -7,22 +7,13 @@ var fs = require("fs");
 var dataArray = [];
 var liriToDo = "";
 
-//fs.readFile("random.txt", "utf8", function(error, data) {
-//	if (error) {
-//		return console.log(error);
-//	}
-	//console.log("file data" +data)
-//	dataArray = data.split(",");
-//	console.log("data array " + dataArray[1])
-//})
-//console.log(dataArray)
+
+//grabs input with spaces
 for (i = 3; i < process.argv.length; i++) {
 	liriToDo = liriToDo + " " + userInput[i];
 }
-//console.log(liriToDo);
-var liriCommand = userInput[2];
-//var liriToDo = userInput[3];
 
+var liriCommand = userInput[2];
 
 if (liriCommand === "my-tweets") {
 	tweets();
@@ -34,41 +25,35 @@ if (liriCommand === "my-tweets") {
 	dowhat();
 }
 
-
+//movie-this function
 function movie(liriToDo) {
 	if (liriToDo == "") {
 		liriToDo = "Mr. Nobody";
-		
-	} else {
-		
-	}
-
-	
+	} 
 	var movieName = liriToDo;
-	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=40e9cece";
-	
+	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&apikey=40e9cece";
 	request(queryUrl, function(error, response, body) {
-		if (!error && response.statusCode === 200) {
-			console.log("Searching for " + JSON.parse(body).Title + ". Here's what I found...");
-			console.log(movieName + " was released in " + JSON.parse(body).Released + ".");
-			console.log(movieName + " received an IMDB rating of " + JSON.parse(body).Ratings[0].Value + ".");
-			console.log(movieName + " received a Rotten Tomatoes rating of " + JSON.parse(body).Ratings[1].Value + ".");
-			console.log(movieName + " was produced in " + JSON.parse(body).Country + ".");
-			console.log("The language for " + movieName + " is " + JSON.parse(body).Language + ".");
-			console.log("The plot synopsis for " + movieName + " is: " + JSON.parse(body).Plot);
-			console.log("The main actors for " + movieName + " are " + JSON.parse(body).Actors + ".");
+	
+	if (!error && response.statusCode === 200) {
+		var body = JSON.parse(body);
+		console.log("Searching for " + body.Title + ". Here's what I found...");
+		console.log(movieName + " was released in " + body.Released + ".");
+		console.log(movieName + " received an IMDB rating of " + body.imdbRating + ".");
+		console.log(movieName + " received a Rotten Tomatoes rating of " + body.Ratings[1].Value + ".");
+		console.log(movieName + " was produced in " + body.Country + ".");
+		console.log("The language for " + movieName + " is " + body.Language + ".");
+		console.log("The plot synopsis for " + movieName + " is: " + body.Plot);
+		console.log("The main actors for " + movieName + " are " + body.Actors + ".");
 		}
 	})
 }
 
+//spotify-this funciton
 function spotify(liriToDo) {
 	if (liriToDo == "") {
 		liriToDo = "I Saw The Sign";
 	}
-
-	var songTitle = liriToDo
-	//console.log(songTitle)
-	//var Spotify = require("node-spotify-api");
+	var songTitle = liriToDo;
 	var spotify = new Spotify({
 		id: "630fc259fe3f4fd2a8589b4c5a79f5b3",
 		secret: "26cb06d48ed14d0fa2105e3b056a2dba"
@@ -78,46 +63,43 @@ function spotify(liriToDo) {
 		if (err) {
 			return console.log("error occured: " + err);
 		}
-		var song = data.tracks.items
+		var song = data.tracks.items;
 
-		//console.log(song[0])
 		for (var j=0; j < song.length; j++){
-		//console.log(song[j]);
-		console.log("Artist: " + song[j].artists[0].name)
-		console.log("Song name: " + song[j].name);
-		console.log("Preview URL: " + song[j].preview_url)
-		console.log("----------------------------------")
+			console.log("Artist: " + song[j].artists[0].name)
+			console.log("Song name: " + song[j].name);
+			console.log("Preview URL: " + song[j].preview_url)
+			console.log("----------------------------------")
 		}
 	})
 }
 
+//tweet-this function
 function tweets() {
-	//console.log("my key" + key.access_token_secret)
 	var client = new Twitter(key);
 	var params = {screen_name: "nodejs"};
 	client.get("statuses/user_timeline", params, function(error, tweets, response) {
 		if (error) {
 		 	return console.log("error occured: " + error)
-		} //console.log(tweets[1], null, 2)
+		} 
 			for (var k=0; k<tweets.length; k++) {
-		  console.log(tweets[k].created_at)
-		  console.log(tweets[k].text)
-		 //console.log(response)
-		 console.log("----------------------------------")
+		  	console.log(tweets[k].created_at)
+		  	console.log(tweets[k].text)
+		 	console.log("----------------------------------")
 		}
 	});
 }
 
+//do-what-it-says function
 function dowhat() {
-	//console.log("function " + dataArray[1])
+	
 	fs.readFile("random.txt", "utf8", function(error, data) {
 	if (error) {
 		return console.log(error);
 	}
-	//console.log("file data" +data)
 	dataArray = data.split(",");
 	console.log("data array " + dataArray[1])
 	spotify(dataArray[1]);
-})
-	//spotify(dataArray[1])
+	})
+	
 }
