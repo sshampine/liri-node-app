@@ -31,20 +31,30 @@ function movie(liriToDo) {
 		liriToDo = "Mr. Nobody";
 	} 
 	var movieName = liriToDo;
-	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&apikey=40e9cece";
+	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&plot=short&apikey=40e9cece";
 	request(queryUrl, function(error, response, body) {
 	
 	if (!error && response.statusCode === 200) {
 		var body = JSON.parse(body);
 		console.log("Searching for " + body.Title + ". Here's what I found...");
 		console.log(movieName + " was released in " + body.Released + ".");
-		console.log(movieName + " received an IMDB rating of " + body.imdbRating + ".");
+		console.log(movieName + " received an IMDB rating of " + body.Ratings[0].Value + ".");
 		console.log(movieName + " received a Rotten Tomatoes rating of " + body.Ratings[1].Value + ".");
 		console.log(movieName + " was produced in " + body.Country + ".");
 		console.log("The language for " + movieName + " is " + body.Language + ".");
 		console.log("The plot synopsis for " + movieName + " is: " + body.Plot);
 		console.log("The main actors for " + movieName + " are " + body.Actors + ".");
-		}
+
+		//write log
+		fs.appendFile("log.txt", "Searching for " + body.Title + ". Here's what I found...");
+		fs.appendFile("log.txt", movieName + " was released in " + body.Released + ".");
+		fs.appendFile("log.txt", movieName + " received an IMDB rating of " + body.Ratings[0].Value + ".");
+		fs.appendFile("log.txt", movieName + " received a Rotten Tomatoes rating of " + body.Ratings[1].Value + ".");
+		fs.appendFile("log.txt", movieName + " was produced in " + body.Country + ".")
+		fs.appendFile("log.txt", "The language for " + movieName + " is " + body.Language + ".");
+		fs.appendFile("log.txt", "The plot synopsis for " + movieName + " is: " + body.Plot);
+		fs.appendFile("log.txt", "The main actors for " + movieName + " are " + body.Actors + ".");
+		} else (console.log(error))
 	})
 }
 
@@ -70,6 +80,12 @@ function spotify(liriToDo) {
 			console.log("Song name: " + song[j].name);
 			console.log("Preview URL: " + song[j].preview_url)
 			console.log("----------------------------------")
+
+			//write log
+			fs.appendFile("log.txt", song[j].artists[0].name);
+			fs.appendFile("log.txt", song[j].name);
+			fs.appendFile("log.txt", song[j].preview_url);
+			fs.appendFile("log.txt", "----------------------------------")
 		}
 	})
 }
@@ -84,8 +100,13 @@ function tweets() {
 		} 
 			for (var k=0; k<tweets.length; k++) {
 		  	console.log(tweets[k].created_at)
-		  	console.log(tweets[k].text)
+		  	console.log("@nodejs: " + tweets[k].text)
 		 	console.log("----------------------------------")
+
+		 	//write log
+		 	fs.appendFile("log.txt", tweets[k].created_at);
+		 	fs.appendFile("log.txt", "@nodejs: " + tweets[k].text);
+		 	fs.appendFile("log.txt", "----------------------------------")
 		}
 	});
 }
