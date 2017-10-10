@@ -51,8 +51,8 @@ The challenge was to create a LIRI bot using NodeJS similar to Apple's Siri. Ins
 
 * Node.js
 * Twitter NPM Package 
-* Spotify NMP Package
-* Request NMP Package
+* Spotify NPM Package
+* Request NPM Package
 
 ## Authors
 
